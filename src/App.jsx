@@ -1,24 +1,20 @@
+import { useState } from "react";
 import "./App.css";
 
-import Home from "./pages/Home/Home";
-import Movie from "./pages/Movie/Movie";
-import Cast from "./pages/Cast/Cast";
-import Reviews from "./pages/Reviews/Reviews";
-import Header from "./Components/Header/Header";
-
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./components/pages/Home/Home";
+import { Movie } from "./components/pages/Movie/Movie";
+import { MovieDetails } from "./components/pages/MovieDetails/MovieDetails";
+import { Layout } from "./components/Layout/Layout";
 
 function App() {
   return (
     <>
-      <Header />
-
       <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route path="/movie" element={<Movie />}>
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="movie" element={<Movie />} />
+          <Route path="/movie/:movieId" element={<MovieDetails />} />
         </Route>
       </Routes>
     </>
