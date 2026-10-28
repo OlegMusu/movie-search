@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { searchMovie } from "../../../api"
+import { FormMovie, MovieSearch, ButtonMovie } from "./Movie.style";
 import MovieList from "../../MovieList/MovieList"
 
 export function Movie() {
@@ -24,10 +25,10 @@ export function Movie() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input onChange={(event) => setQwery(event.target.value)} value={qwery} type="text" placeholder="enter movie"/>
-                <button type="submit">Search</button>
-            </form>
+            <FormMovie onSubmit={handleSubmit}>
+                <MovieSearch onChange={(event) => setQwery(event.target.value)} value={qwery} type="text" placeholder="enter movie"/>
+                <ButtonMovie type="submit">Search</ButtonMovie>
+            </FormMovie>
             {movie.length > 0 && <MovieList movies={movie} />}
         </>
     )

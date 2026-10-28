@@ -1,33 +1,44 @@
-import { useState, useEffect } from "react"
-import { getMovieCast } from "../../../api"
-import { useParams } from "react-router-dom"
+import { useState, useEffect } from "react";
+import { getMovieCast } from "../../../api";
+import { useParams } from "react-router-dom";
+import {
+  CastTitle,
+  CastGrid,
+  CastCard,
+  CastPhoto,
+  CastName,
+  CharacterName,
+} from "./Cast.style";
 
-export default function Cast () {
-    const [cast, setCast] = useState([])
-    const {movieId} = useParams()
+export default function Cast() {
+  const [cast, setCast] = useState([]);
+  const { movieId } = useParams();
 
-    useEffect(() => {
-        async function fetchCast() {
-            const data = await getMovieCast(movieId)
-            setCast(data)
-        }
-        fetchCast()
-    }, [movieId])
+  useEffect(() => {
+    async function fetchCast() {
+      const data = await getMovieCast(movieId);
+      setCast(data);
+    }
+    fetchCast();
+  }, [movieId]);
 
-    return (
-        <>
-            <h1>Cast</h1>
-            <ul>
-                {cast.map((actor) => {
-                    return (
-                        <li key={actor.id}>
-                            <img src={`http://image.tmdb.org/t/p/w200${actor.profile_path}`} alt={actor.name} />
-                            <h2>{actor.name}</h2>
-                            <p>Character: {actor.character}</p>
-                        </li>
-                    )
-                })}
-            </ul>
-        </>
-    )
+  return (
+    <>
+      <CastTitle>Cast</CastTitle>
+      <CastGrid>
+        {cast.map((actor) => {
+          return (
+            <CastCard key={actor.id}>
+              <CastPhoto
+                src={`http://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                alt={actor.name}
+              />
+              <CastName>{actor.name}</CastName>
+              <CharacterName>Character: {actor.character}</CharacterName>
+            </CastCard>
+          );
+        })}
+      </CastGrid>
+    </>
+  );
 }

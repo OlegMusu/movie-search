@@ -17,7 +17,7 @@ export function Home() {
 
   return (
     <>
-      <h1>Trending today</h1>
+      <h1 className="trending-today">Trending today</h1>
       <MovieList movies={movie} />
     </>
   );

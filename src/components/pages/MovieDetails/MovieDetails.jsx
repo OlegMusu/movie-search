@@ -1,4 +1,18 @@
-import { useParams, useLocation, NavLink, Link, Outlet } from "react-router-dom";
+import { useParams, useLocation, NavLink, Outlet } from "react-router-dom";
+import {
+  DetailsContainer,
+  PicturesContainer,
+  BackLink,
+  MainInfoWrapper,
+  DetailPoster,
+  InfoContent,
+  InfoTitle,
+  InfoSubtitle,
+  GenreList,
+  AdditionalInfoWrapper,
+  InfoLinksList,
+  InfoNavLink,
+} from "./MovieDetails.style";
 
 import { useEffect, useState } from "react";
 import { getMovieDetails } from "../../../api";
@@ -23,33 +37,38 @@ export function MovieDetails() {
 
   return (
     <>
-      <div>
-        <Link to={location.state?.pathname || "/"}>Go back</Link>
-        {movie.poster_path ? (
-          <img src={imageUrl} alt={movie.title} />
-        ) : (
-          <img src={deafultImg} alt={movie.title} />
-        )}
-        <div>
-          <h1>{movie.title}</h1>
-          <p></p>
-          <h2>Overview</h2>
+      <DetailsContainer>
+        <PicturesContainer>
+          <BackLink to={location.state?.pathname || "/"}>Go back</BackLink>
+          {movie.poster_path ? (
+            <DetailPoster src={imageUrl} alt={movie.title} />
+          ) : (
+            <DetailPoster src={deafultImg} alt={movie.title} />
+          )}
+        </PicturesContainer>
+        <InfoContent>
+          <InfoTitle>{movie.title}</InfoTitle>
+          <InfoSubtitle>Overview</InfoSubtitle>
           <p>{movie.overview}</p>
-          <h3>Genres</h3>
+          <InfoSubtitle>Genres</InfoSubtitle>
           <ul>
             {movie.genres?.map((item) => {
               return <li key={item.id}>{item.name}</li>;
             })}
           </ul>
-        </div>
-      </div>
-      <div>
+        </InfoContent>
+      </DetailsContainer>
+      <AdditionalInfoWrapper>
         <h2>Additional information</h2>
-        <ul>
-          <li><NavLink to="cast">Cast</NavLink></li>
-          <li><NavLink to="reviews">Reviews</NavLink></li>
-        </ul>
-      </div>
+        <InfoLinksList>
+          <li>
+            <InfoNavLink to="cast">Cast</InfoNavLink>
+          </li>
+          <li>
+            <InfoNavLink to="reviews">Reviews</InfoNavLink>
+          </li>
+        </InfoLinksList>
+      </AdditionalInfoWrapper>
       <Outlet />
     </>
   );

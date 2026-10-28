@@ -1,7 +1,7 @@
 :root {
+  /* Светлая тема */
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #fff;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
@@ -18,56 +18,62 @@
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Переменная для картинок */
+  --bg-image: url(./pictures/background/white_background.jpg);
 
   @media (max-width: 1024px) {
     font-size: 16px;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+/* При темной теме меняем картинку и цвет #root (он станет черным, но сзади останется размытая картинка) */
+body.dark-theme {
+  --bg-image: url(./pictures/background/black_background.jpg); 
+  /* Сюда ты позже впишешь новые цвета текста для темной темы */
 }
 
 body {
   margin: 0;
+  position: relative;
+  min-height: 100vh;
+  /* Прячем вылезающие из-за блюра края картинки */
+  overflow-x: hidden; 
+}
+
+/* Размытый фоновый слой */
+body::before {
+  content: "";
+  position: fixed;
+  top: -10px; /* Небольшой сдвиг, чтобы из-за блюра не было белых краев */
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(4px); 
+  z-index: -1;
+  transition: background-image 0.3s ease;
 }
 
 #root {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  color: var(--text);
 }
 
-h1,
-h2 {
+h1, h2 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
@@ -82,6 +88,7 @@ h1 {
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
@@ -91,21 +98,57 @@ h2 {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  cursor: pointer;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  border: 2px solid black; 
+  border-radius: 34px;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: black; 
+  border-radius: 50%;
+  transition: .2s ease-in-out;
+}
+
+body.dark-theme .slider {
+  border-color: rgb(87, 79, 65);
+  box-shadow: 0 0 15px rgb(136, 112, 69);
+}
+body.dark-theme .slider:before {
+  background-color: rgb(172, 144, 97);
+}
+
+.theme-switch input:checked + .slider:before {
+  transform: translateX(24px);
 }
